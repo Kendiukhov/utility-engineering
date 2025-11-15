@@ -12,7 +12,7 @@ of Liu et al. (2024).
 ├── data/
 │   ├── scenarios.json          # Example scenarios probing value conflicts
 │   └── scenarios.yaml          # YAML version (requires PyYAML to load)
-├── experiment_config.json      # Example configuration referencing prompt strategies
+├── experiment_config.yaml      # Example configuration referencing prompt strategies
 ├── scripts/
 │   └── run_experiments.py      # CLI entry point for running studies
 └── src/pref_gap_experiments/
@@ -40,6 +40,7 @@ of Liu et al. (2024).
    the literature or your own annotations.
 
 3. Adjust `experiment_config.json` to list the strategies you wish to compare and
+3. Adjust `experiment_config.yaml` to list the strategies you wish to compare and
    configure global parameters (model name, temperature, etc.).
 
 4. Run experiments with the CLI. By default a deterministic mock client is used
@@ -62,6 +63,10 @@ of Liu et al. (2024).
        --mock-responses data/mock_responses.json \
        --output reports/strategy_comparison.json
    ```
+
+   ```bash
+   python scripts/run_experiments.py data/scenarios.json experiment_config.yaml \
+       --output reports.yaml
    ```
 
 5. Inspect the generated `reports.yaml` for per-scenario scores and average
