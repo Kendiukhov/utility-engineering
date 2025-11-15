@@ -39,12 +39,30 @@ of Liu et al. (2024).
    extend it with additional stated vs revealed preference probes derived from
    the literature or your own annotations.
 
+3. Adjust `experiment_config.json` to list the strategies you wish to compare and
 3. Adjust `experiment_config.yaml` to list the strategies you wish to compare and
    configure global parameters (model name, temperature, etc.).
 
 4. Run experiments with the CLI. By default a deterministic mock client is used
    so the harness can execute offline and in CI. To query an actual OpenAI model,
    pass `--use-openai` and ensure your environment is configured with an API key.
+   When working without PyYAML installed, prefer JSON configuration files.
+
+   ```bash
+   PYTHONPATH=src python scripts/run_experiments.py data/scenarios.json experiment_config.json \
+       --output reports.json
+
+   You can provide deterministic scripted outputs for the mock client via
+   `--mock-responses`. The repository includes `data/mock_responses.json`, which
+   encodes multi-line prompt keys and responses for reproducing the comparisons in
+   `analysis/results.md`:
+
+   ```bash
+   PYTHONPATH=src python scripts/run_experiments.py data/scenarios.json \
+       configs/strategy_comparison.json \
+       --mock-responses data/mock_responses.json \
+       --output reports/strategy_comparison.json
+   ```
 
    ```bash
    python scripts/run_experiments.py data/scenarios.json experiment_config.yaml \
