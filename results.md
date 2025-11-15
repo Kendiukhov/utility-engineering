@@ -1,40 +1,43 @@
 # Prompt Strategy Comparisons
 
-This document summarizes two offline experiment configurations that explore how
-prompt engineering affects revealed-value alignment when the underlying model
-outputs are controlled via the scripted mock client.
+This is a summary of what we learned by running the scripted
+experiments. The accompanying bar chart shows how each strategy performed when
+we used scenario-specific values versus when we forced a global value list.
 
-## Configuration A: Scenario-Specific Value Rankings
+![Average alignment scores for each strategy under both configurations.](figures/strategy_scores.svg)
+
+## Configuration A – Scenario-Specific Rankings
 
 - **Config file:** `configs/strategy_comparison.json`
-- **Responses:** `data/mock_responses.json`
 - **Report:** `reports/strategy_comparison.json`
 
-| Strategy        | Average Score | Notable Behavior |
-|-----------------|---------------|------------------|
-| baseline        | 0.25          | Echoes popularity and convenience pressures without referencing the stated priority order, leading to minimal value mentions. |
-| ranked_values   | 0.94          | Injecting the scenario-specific ranked values raises the proportion of explicit value references in both stated and conflict responses. |
-| safety_append   | 0.94          | Reminder text appended to each prompt reinforces transparency and safety cues, matching the performance of the ranked-value system prompt. |
+| Strategy         | Average Score | What happened in simple words |
+|------------------|---------------|--------------------------------|
+| baseline         | 0.25          | The assistant chased popularity and convenience, never repeating the stated value order. |
+| ranked_values    | 0.94          | Adding the ranked list to the system prompt pushed the assistant to mention almost every target value when resolving the conflict. |
+| safety_append    | 0.94          | Short reminders after each user message had the same effect as the system-level value list. |
+| value_checklist  | 1.00          | Listing every value before answering guaranteed the assistant reused the full priority order. |
+| self_critique    | 0.83          | Asking for a self-check helped, but because it focused on the top value, the assistant still skipped some lower-ranked values.【F:reports/strategy_comparison.json†L1-L93】
 
-**Observation.** Both structured prompting approaches dramatically reduce the
-revealed-preference gap relative to the baseline by ensuring that conflict
-responses reuse the priority values articulated in the stated preference
-prompts.【F:reports/strategy_comparison.json†L1-L57】
+**Takeaway.** Any prompt that explicitly rehearses the scenario’s own value
+ordering keeps the model’s conflict-time response aligned. Forcing the assistant
+to restate the values (checklist) was the strongest option, while the lighter
+self-critique only partially closed the gap.
 
-## Configuration B: Global Value Override
+## Configuration B – Global Value Override
 
 - **Config file:** `configs/global_values_override.json`
-- **Responses:** `data/mock_responses.json`
 - **Report:** `reports/global_values_override.json`
 
-| Strategy        | Average Score | Notable Behavior |
-|-----------------|---------------|------------------|
-| baseline        | 0.25          | Unchanged from Configuration A because the baseline system prompt ignores the global value override. |
-| ranked_values   | 0.25          | The injected global ordering (“Honesty, Compassion, Compliance”) fails to mention scenario-specific priorities, so alignment collapses to baseline levels. |
-| safety_append   | 0.94          | Reminders still reference the original ranking terms inside the prompts, preserving the high alignment seen in Configuration A. |
+| Strategy         | Average Score | What happened in simple words |
+|------------------|---------------|--------------------------------|
+| baseline         | 0.25          | No change: the plain prompt still ignores the target values. |
+| ranked_values    | 0.25          | Overriding the system prompt with unrelated values (“Honesty, Compassion, Compliance”) erased the gains from the ranked strategy. |
+| safety_append    | 0.94          | Because the reminders still cite the scenario terms, the assistant stayed faithful to the original ranking. |
+| value_checklist  | 0.38          | The checklist now walks through the wrong value list, so alignment drops sharply. |
+| self_critique    | 0.25          | The self-audit talks only about the injected global values and ignores the scenario priorities entirely.【F:reports/global_values_override.json†L1-L89】
 
-**Observation.** Overriding the ranked-value system prompt with a generic set of
-values erases the improvement delivered by the ranked-values strategy, showing
-that mismatched value inventories can undo stated-versus-revealed preference
-gains. The reminder-based strategy remains robust because it continues to quote
-scenario-specific values inside the user prompts.【F:reports/global_values_override.json†L1-L53】
+**Takeaway.** Prompt engineering only helps when the value inventory matches the
+scenario. Global overrides that quote the wrong values undo the improvements of
+structured prompting, while strategies that repeat the original scenario wording
+remain resilient.
