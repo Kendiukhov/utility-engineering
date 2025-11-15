@@ -37,4 +37,4 @@ prompts.【F:reports/strategy_comparison.json†L1-L57】
 values erases the improvement delivered by the ranked-values strategy, showing
 that mismatched value inventories can undo stated-versus-revealed preference
 gains. The reminder-based strategy remains robust because it continues to quote
-scenario-specific values inside the user prompts.【F:reports/global_values_override.json†L1-L53】
+scenario-specific values inside the user prompts.
