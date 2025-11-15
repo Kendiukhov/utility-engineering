@@ -7,7 +7,7 @@ outputs are controlled via the scripted mock client.
 ## Configuration A: Scenario-Specific Value Rankings
 
 - **Config file:** `configs/strategy_comparison.json`
-- **Mock responses:** `data/mock_responses.json`
+- **Responses:** `data/mock_responses.json`
 - **Report:** `reports/strategy_comparison.json`
 
 | Strategy        | Average Score | Notable Behavior |
@@ -24,7 +24,7 @@ prompts.【F:reports/strategy_comparison.json†L1-L57】
 ## Configuration B: Global Value Override
 
 - **Config file:** `configs/global_values_override.json`
-- **Mock responses:** `data/mock_responses.json`
+- **Responses:** `data/mock_responses.json`
 - **Report:** `reports/global_values_override.json`
 
 | Strategy        | Average Score | Notable Behavior |
