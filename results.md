@@ -17,7 +17,7 @@ we used scenario-specific values versus when we forced a global value list.
 | ranked_values    | 0.94          | Adding the ranked list to the system prompt pushed the assistant to mention almost every target value when resolving the conflict. |
 | safety_append    | 0.94          | Short reminders after each user message had the same effect as the system-level value list. |
 | value_checklist  | 1.00          | Listing every value before answering guaranteed the assistant reused the full priority order. |
-| self_critique    | 0.83          | Asking for a self-check helped, but because it focused on the top value, the assistant still skipped some lower-ranked values.【F:reports/strategy_comparison.json†L1-L93】
+| self_critique    | 0.83          | Asking for a self-check helped, but because it focused on the top value, the assistant still skipped some lower-ranked values.
 
 **Takeaway.** Any prompt that explicitly rehearses the scenario’s own value
 ordering keeps the model’s conflict-time response aligned. Forcing the assistant
