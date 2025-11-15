@@ -13,16 +13,12 @@ from .strategies import (
     PromptStrategy,
     RankedValuesPromptStrategy,
     SafetyAppendPromptStrategy,
-    SelfCritiquePromptStrategy,
-    ValueChecklistPromptStrategy,
 )
 
 STRATEGY_REGISTRY: Dict[str, Type[PromptStrategy]] = {
     "baseline": BaselinePromptStrategy,
     "ranked_values": RankedValuesPromptStrategy,
     "safety_append": SafetyAppendPromptStrategy,
-    "value_checklist": ValueChecklistPromptStrategy,
-    "self_critique": SelfCritiquePromptStrategy,
 }
 
 

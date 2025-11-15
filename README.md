@@ -12,7 +12,7 @@ of Liu et al. (2024).
 ├── data/
 │   ├── scenarios.json          # Example scenarios probing value conflicts
 │   └── scenarios.yaml          # YAML version (requires PyYAML to load)
-├── experiment_config.json      # Example configuration referencing prompt strategies
+├── experiment_config.yaml      # Example configuration referencing prompt strategies
 ├── scripts/
 │   └── run_experiments.py      # CLI entry point for running studies
 └── src/pref_gap_experiments/
@@ -40,6 +40,7 @@ of Liu et al. (2024).
    the literature or your own annotations.
 
 3. Adjust `experiment_config.json` to list the strategies you wish to compare and
+3. Adjust `experiment_config.yaml` to list the strategies you wish to compare and
    configure global parameters (model name, temperature, etc.).
 
 4. Run experiments with the CLI. By default a deterministic mock client is used
@@ -62,38 +63,16 @@ of Liu et al. (2024).
        --mock-responses data/mock_responses.json \
        --output reports/strategy_comparison.json
    ```
-   ```
-
-5. Inspect the generated reports for per-scenario scores and average alignment
-   metrics per strategy. Use these outputs to compare prompt engineering
-   approaches and quantify improvements in revealed preference alignment. To
-   produce a quick visualization of the results, run the helper script below.
 
    ```bash
-   PYTHONPATH=src python analysis/plot_scores.py \
-       --reports reports/strategy_comparison.json reports/global_values_override.json \
-       --labels targeted global_override \
-       --output analysis/figures/strategy_scores.svg
+   python scripts/run_experiments.py data/scenarios.json experiment_config.yaml \
+       --output reports.yaml
    ```
 
-   The command writes an SVG bar chart that contrasts the average alignment
-   score of each prompt strategy under two configuration regimes.
-
-## Available prompt strategies
-
-The repository currently includes five prompt-engineering strategies that can
-be combined in experiment configurations:
-
-- **baseline** – a plain helpful-assistant system prompt.
-- **ranked_values** – injects a ranked list of scenario or globally supplied
-  values into the system prompt.
-- **safety_append** – appends reminders after each user query to reference the
-  value order explicitly when responding.
-- **value_checklist** – asks the assistant to walk through every value as a
-  checklist before answering and to name the highest priority.
-- **self_critique** – requires the assistant to identify the top value, answer
-  normally, and then perform a short self-audit explaining how the leading
-  value shaped the reply.
+5. Inspect the generated `reports.yaml` for per-scenario scores and average
+   alignment metrics per strategy. Use these outputs to compare prompt
+   engineering approaches and quantify improvements in revealed preference
+   alignment.
 
 ## Testing
 
