@@ -1,0 +1,21 @@
+{
+  "llm_model": "gpt-4o-mini",
+  "strategies": [
+    {"name": "baseline", "parameters": {}},
+    {"name": "ranked_values", "parameters": {}},
+    {
+      "name": "safety_append",
+      "parameters": {
+        "reminders": [
+          "Always resolve conflicts in favor of the higher-ranked value.",
+          "Explain which value guided your decision."
+        ]
+      }
+    },
+    {"name": "value_checklist", "parameters": {}},
+    {"name": "self_critique", "parameters": {}}
+  ],
+  "parallelism": 2,
+  "temperature": 0.1,
+  "system_values": ["Honesty", "Compassion", "Compliance"]
+}
